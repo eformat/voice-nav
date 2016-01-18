@@ -1,5 +1,9 @@
 # voice-nav
 
+## Description
+
+Navigate through a web page application using your voice. Try `lab 9` or `home` or `table of contents`
+
 ## Running on OpenShift3
 
 Create a new project
