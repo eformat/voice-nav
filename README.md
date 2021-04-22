@@ -4,24 +4,32 @@
 
 Navigate through a web page application using your voice. Try `lab 9` or `home` or `table of contents`
 
-## Running on OpenShift3
+## Running on OpenShift
 
 Create a new project
 
-    oc new-project nav-talk  --display-name='nav-talk' --description='Voice Driven Navigation'
+```bash
+oc new-project nav-talk  --display-name='nav-talk' --description='Voice Driven Navigation'
+```
 
 Create the node.js application using STI
 
-    oc new-app registry.access.redhat.com/openshift3/nodejs-010-rhel7:latest~https://github.com/eformat/voice-nav --name=voicenav
+```bash
+oc new-app nodejs:latest~https://github.com/eformat/voice-nav --name=voicenav
+```
 
 Expose the service
 
-    oc expose svc/voicenav
+```bash
+oc expose svc/voicenav
+```
 
 Voice API in google chrome works best with SSL endpoint, so lets use default router self signed cert:
 
-    oc get route/voicenav -o yaml | sed -e '/host/a\ \ tls:\n \ \ \ \ termination: edge' | oc replace -f -
+```bash
+oc patch route/voicenav --type=json -p '[{"op":"add", "path":"/spec/tls", "value":{"termination":"edge","insecureEdgeTerminationPolicy":"Redirect"}}]'
+```
 
 Test at
 
-    https://voicenav-nav-talk.apps.bar.com
+- https://voicenav-nav-talk.apps.bar.com
